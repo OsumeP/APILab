@@ -1,0 +1,132 @@
+{
+	"id": "223c1b3f-e8a5-4795-9187-c718f0c92c8e",
+	"name": "API de Inscripciones",
+	"timestamp": "2026-11-19T23:15:34.649Z",
+	"collection_id": "36489850-cb00dd23-7df3-4239-96cd-4cd0ad9960ae",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 0,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-11-19T23:15:33.387Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "2072322e-549b-4f42-94c3-6388f1ff6426",
+			"name": "Listar cursos con sus cupos disponibles",
+			"url": "http://127.0.0.1:8000/cursos",
+			"time": 5,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				5
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "8f6768f2-c6ba-478a-80dd-0cf4db3d6948",
+			"name": "Consultar un registro de inscripción",
+			"url": "http://127.0.0.1:8000/inscripciones/1412",
+			"time": 5,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				5
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "d2591561-4f55-4107-ac09-b85194e9882d",
+			"name": "Cambiar estado de un registro de inscripción",
+			"url": "http://127.0.0.1:8000/inscripciones/1412",
+			"time": 3,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				3
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "844cbe6e-1709-4353-ad96-331c13d7be00",
+			"name": "Añadir un nuevo registro de inscripción",
+			"url": "http://127.0.0.1:8000/inscripciones",
+			"time": 3,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				3
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "b80c0501-aacd-4df3-9fd9-84bffa4c60e4",
+			"name": "Consultar inscripciones de un estudiante",
+			"url": "http://127.0.0.1:8000/estudiantes/string/inscripciones",
+			"time": 3,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				3
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 19,
+	"collection": {
+		"requests": [
+			{
+				"id": "2072322e-549b-4f42-94c3-6388f1ff6426",
+				"method": "GET"
+			},
+			{
+				"id": "8f6768f2-c6ba-478a-80dd-0cf4db3d6948",
+				"method": "GET"
+			},
+			{
+				"id": "d2591561-4f55-4107-ac09-b85194e9882d",
+				"method": "PATCH"
+			},
+			{
+				"id": "844cbe6e-1709-4353-ad96-331c13d7be00",
+				"method": "POST"
+			},
+			{
+				"id": "b80c0501-aacd-4df3-9fd9-84bffa4c60e4",
+				"method": "GET"
+			}
+		]
+	}
+}
