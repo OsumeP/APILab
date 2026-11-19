@@ -50,3 +50,14 @@ En sistemas reales (como universidades, bancos o tiendas), casi nunca se usa `DE
   Porque **`400 Bad Request`** significa que la petición está mal formada (sintaxis rota o datos corruptos que el servidor ni siquiera puede procesar). En un duplicado, el JSON es perfectamente válido, pero la operación entra en **conflicto (`409 Conflict`)** con el estado actual de los datos en el servidor (ya existe una inscripción activa igual).
 
 ---
+
+## Paso 4
+
+> **Pregunta:** Si otro equipo solo tuviera openapi.json, ¿podría consumir la API sin hacerles
+preguntas? ¿Qué información le faltaría?
+
+### Respuesta
+
+Cualquier equipo podría consumir la API sin problemas teniendo el openapi.json, ya que contiene toda la información que un consumidor necesita saber como ejemplos de datos, esquemas, para que se usa cada endpoint y las respuestas que pueden recibir. Todo esto mientras no da detalles acerca de la implementación del endpoint usado. 
+
+---

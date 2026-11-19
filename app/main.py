@@ -47,10 +47,17 @@ def listar_cursos():
 # TODO(Paso 2): decorador para  POST /inscripciones
 #               con response_model=Inscripcion y status_code=201 (se crea un recurso)
 # 2 --- POST /inscripciones ----------------------------------------------------
-@app.post("/inscripciones", response_model=Inscripcion, status_code=201)
-
-
 # TODO(Paso 4): agrégale tags=["Inscripciones"], un summary y responses para 404 y 409
+@app.post(
+        "/inscripciones",
+        response_model=Inscripcion,
+        status_code=201,
+        tags=["Inscripciones"],
+        summary="Añadir un nuevo registro de inscripción",
+        responses={
+            404: {"model": Error, "description": "NO_ENCONTRADO"},
+            409: {"model": Error, "description": "DUPLICADA, PRERREQUISITOS_PENDIENTES o SIN_CUPO"},
+        })
 def crear_inscripcion(cuerpo: InscripcionCrear):
     estudiante = datos.ESTUDIANTES.get(cuerpo.estudiante_id)
     curso = datos.CURSOS.get(cuerpo.curso_codigo)
@@ -78,10 +85,15 @@ def crear_inscripcion(cuerpo: InscripcionCrear):
 # 3 --- GET /inscripciones/{inscripcion_id} ------------------------------------
 # TODO(Paso 2): decorador para  GET /inscripciones/{inscripcion_id}
 #               con response_model=Inscripcion
-@app.get("/inscripciones/{inscripcion_id}", response_model=Inscripcion)
-
-
 # TODO(Paso 4): tags, summary y responses para 404
+@app.get(
+        "/inscripciones/{inscripcion_id}", 
+        response_model=Inscripcion,
+        tags=["Inscripciones"],
+        summary="Consultar un registro de inscripción",
+        responses={
+            404: {"model": Error, "description": "NO_ENCONTRADO"},
+        })
 def obtener_inscripcion(inscripcion_id: int):
     inscripcion = datos.INSCRIPCIONES.get(inscripcion_id)
     if inscripcion is None:
@@ -92,10 +104,15 @@ def obtener_inscripcion(inscripcion_id: int):
 # 4 --- GET /estudiantes/{estudiante_id}/inscripciones -------------------------
 # TODO(Paso 2): decorador para  GET /estudiantes/{estudiante_id}/inscripciones
 #               con response_model=list[Inscripcion]
-@app.get("/estudiantes/{estudiante_id}/inscripciones", response_model=list[Inscripcion])
-
-
 # TODO(Paso 4): tags=["Estudiantes"] y un summary
+@app.get(
+        "/estudiantes/{estudiante_id}/inscripciones", 
+        response_model=list[Inscripcion],
+        tags=["Estudiantes"],
+        summary="Consultar inscripciones de un estudiante",
+        responses={
+            404: {"model": Error, "description": "NO_ENCONTRADO"},
+        })
 def inscripciones_de_estudiante(estudiante_id: str):
     if estudiante_id not in datos.ESTUDIANTES:
         raise HTTPException(status_code=404, detail="NO_ENCONTRADO")
@@ -105,10 +122,16 @@ def inscripciones_de_estudiante(estudiante_id: str):
 # 5 --- PATCH /inscripciones/{inscripcion_id} ----------------------------------
 # TODO(Paso 2): decorador para  PATCH /inscripciones/{inscripcion_id}
 #               con response_model=Inscripcion
-@app.patch("/inscripciones/{inscripcion_id}", response_model=Inscripcion)
-
-
 # TODO(Paso 4): tags, summary y responses para 404 y 409
+@app.patch(
+        "/inscripciones/{inscripcion_id}", 
+        response_model=Inscripcion,
+        tags=["Inscripciones"],
+        summary="Cambiar estado de un registro de inscripción",
+        responses={
+            404: {"model": Error, "description": "NO_ENCONTRADO"},
+            409: {"model": Error, "description": "TRANSICION_INVALIDA"},
+        })
 def cambiar_estado(inscripcion_id: int, cuerpo: CambioEstado):
     inscripcion = datos.INSCRIPCIONES.get(inscripcion_id)
     if inscripcion is None:

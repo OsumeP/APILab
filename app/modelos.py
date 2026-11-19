@@ -42,8 +42,8 @@ class EstadoInscripcion(str, Enum):
 
 class InscripcionCrear(BaseModel):
     # TODO(Paso 3): dos campos de tipo str: estudiante_id y curso_codigo
-    estudiante_id: str
-    curso_codigo: str
+    estudiante_id: str = Field(examples=["el"])
+    curso_codigo: str = Field(examples=["IS2"])
     # (En el Paso 4 les agregarás un ejemplo con Field(examples=[...]))
 
 class Inscripcion(BaseModel):
