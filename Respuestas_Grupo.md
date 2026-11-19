@@ -61,3 +61,27 @@ preguntas? ¿Qué información le faltaría?
 Cualquier equipo podría consumir la API sin problemas teniendo el openapi.json, ya que contiene toda la información que un consumidor necesita saber, como ejemplos de datos, esquemas, para que se usa cada endpoint y las respuestas que pueden recibir. Todo esto mientras no da detalles acerca de la implementación del endpoint usado. 
 
 ---
+
+## Paso 6
+
+> **Pregunta:** ¿Qué aporta probar desde un cliente HTTP si ya hay pruebas en pytest? ¿Quién
+más en un equipo podría usar estas peticiones?
+
+### Respuesta
+
+Aporta probarlo desde un cliente ya que esto simula un comportamiento más realista en un ambiente de producción, ver como se comporta la api y corroborar que el formato de respuesta entregado sea igual al esperado.
+
+Estas peticiones podrían ser usadas por integrantes del grupo de QA, para probar escenarios no esperados, edge cases y verificar que la API sea robusta y no falle ante inputs válidos por parte del usuario.
+
+---
+
+> **Pregunta Final:** ¿Qué recurso tiene estados como la inscripción y qué reglas
+podrían responder 409?
+
+### Respuesta
+
+Nuestro sistema de almacenamiento encriptado de música permite compartir los archivos del usuario de manera específica o de manera pública (para que todos los demás usuarios puedan escucharla). Para manejar el estado público o privado de un archivo usamos estados en una propiedad de la entidad en la base de datos. 
+
+Algunas reglas que podrían responder 409 es tratar de hacer público un archivo que ya lo es, o tratar de darle un doble acceso a un mismo usuario.
+
+---
