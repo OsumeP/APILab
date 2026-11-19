@@ -58,6 +58,6 @@ preguntas? ¿Qué información le faltaría?
 
 ### Respuesta
 
-Cualquier equipo podría consumir la API sin problemas teniendo el openapi.json, ya que contiene toda la información que un consumidor necesita saber como ejemplos de datos, esquemas, para que se usa cada endpoint y las respuestas que pueden recibir. Todo esto mientras no da detalles acerca de la implementación del endpoint usado. 
+Cualquier equipo podría consumir la API sin problemas teniendo el openapi.json, ya que contiene toda la información que un consumidor necesita saber, como ejemplos de datos, esquemas, para que se usa cada endpoint y las respuestas que pueden recibir. Todo esto mientras no da detalles acerca de la implementación del endpoint usado. 
 
 ---

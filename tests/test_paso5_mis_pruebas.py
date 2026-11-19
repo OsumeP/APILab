@@ -26,21 +26,32 @@ def test_ejemplo_inscripcion_exitosa(cliente):
 def test_no_permite_inscripcion_duplicada(cliente):
     # TODO(Paso 5)
     # Arrange: inscribe a e1 en IS1
+    cuerpo = {"estudiante_id": "e1", "curso_codigo": "IS1"}
+    cliente.post("/inscripciones", json=cuerpo)
     # Act:     intenta inscribirlo OTRA VEZ en IS1
+    r = cliente.post("/inscripciones", json=cuerpo)
     # Assert:  409 y detail == "DUPLICADA"
-    pytest.fail("Prueba sin escribir")
+    assert r.status_code == 409
+    assert r.json()["detail"] == "DUPLICADA"
 
 
 def test_no_permite_inscribir_sin_prerrequisitos(cliente):
     # TODO(Paso 5)
+    cuerpo = {"estudiante_id": "e4", "curso_codigo": "IS2"}
     # Act:     inscribe a e4 en IS2 (e4 no ha aprobado IS1)
+    r = cliente.post("/inscripciones", json=cuerpo)
     # Assert:  409 y detail == "PRERREQUISITOS_PENDIENTES"
-    pytest.fail("Prueba sin escribir")
+    assert r.status_code == 409
+    assert r.json()["detail"] == "PRERREQUISITOS_PENDIENTES"
 
 
 def test_no_permite_inscribir_sin_cupo(cliente):
     # TODO(Paso 5)
     # Arrange: llena los 2 cupos de IS2 (e1 y e2)
+    cliente.post("/inscripciones", json={"estudiante_id": "e1", "curso_codigo": "IS2"})
+    cliente.post("/inscripciones", json={"estudiante_id": "e2", "curso_codigo": "IS2"})
     # Act:     intenta inscribir a e3 en IS2
+    r = cliente.post("/inscripciones", json={"estudiante_id": "e3", "curso_codigo": "IS2"})
     # Assert:  409 y detail == "SIN_CUPO"
-    pytest.fail("Prueba sin escribir")
+    assert r.status_code == 409
+    assert r.json()["detail"] == "SIN_CUPO"
