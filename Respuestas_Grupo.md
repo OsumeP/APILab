@@ -1,22 +1,38 @@
-# Respuestas de DiscusiÛn en Grupo ó API de Inscripciones
+# Respuestas de DiscusiÔøΩn en Grupo ÔøΩ API de Inscripciones
 
 ## Paso 1
 
-> **Pregunta:** øQuÈ recurso relaciona a Estudiante con Curso? øDÛnde se guardan los cupos y dÛnde los cursos aprobados?
+> **Pregunta:** ÔøΩQuÔøΩ recurso relaciona a Estudiante con Curso? ÔøΩDÔøΩnde se guardan los cupos y dÔøΩnde los cursos aprobados?
 
 ### Respuesta
 
-El recurso que relaciona a `Estudiante` con `Curso` es **InscripciÛn**, los cupos se guardan en **Curso** y los cursos aprobados se guardan en **Estudiante**.
+El recurso que relaciona a `Estudiante` con `Curso` es **InscripciÔøΩn**, los cupos se guardan en **Curso** y los cursos aprobados se guardan en **Estudiante**.
 
-#### 1. øQuÈ recurso relaciona a Estudiante con Curso?
-* **El recurso `InscripciÛn`:** Act˙a como la entidad intermedia (lo que en bases de datos serÌa una tabla de uniÛn para una relaciÛn muchos-a-muchos).
-* Un estudiante puede inscribir muchos cursos y un curso tiene muchos estudiantes inscritos; por eso `InscripciÛn` guarda el `estudiante_id`, el `curso_codigo` y el `estado` de ese vÌnculo.
+#### 1. ÔøΩQuÔøΩ recurso relaciona a Estudiante con Curso?
+* **El recurso `InscripciÔøΩn`:** ActÔøΩa como la entidad intermedia (lo que en bases de datos serÔøΩa una tabla de uniÔøΩn para una relaciÔøΩn muchos-a-muchos).
+* Un estudiante puede inscribir muchos cursos y un curso tiene muchos estudiantes inscritos; por eso `InscripciÔøΩn` guarda el `estudiante_id`, el `curso_codigo` y el `estado` de ese vÔøΩnculo.
 
-#### 2. øDÛnde se guardan los cupos?
-* **En el recurso `Curso`:** Es un atributo propio de cada materia (en el cÛdigo se maneja como `curso["cupos"]`).
-* Adem·s, los **cupos disponibles** no se guardan como un dato fijo, sino que se calculan din·micamente restando las inscripciones activas a los cupos totales del curso (`curso["cupos"] - len(datos.activas_del_curso(...))`).
+#### 2. ÔøΩDÔøΩnde se guardan los cupos?
+* **En el recurso `Curso`:** Es un atributo propio de cada materia (en el cÔøΩdigo se maneja como `curso["cupos"]`).
+* AdemÔøΩs, los **cupos disponibles** no se guardan como un dato fijo, sino que se calculan dinÔøΩmicamente restando las inscripciones activas a los cupos totales del curso (`curso["cupos"] - len(datos.activas_del_curso(...))`).
 
-#### 3. øDÛnde se guardan los cursos aprobados?
-* **En el recurso `Estudiante`:** Es un atributo propio del historial acadÈmico de cada alumno (aparece como `estudiante["aprobados"]`, una lista con los cÛdigos de las materias que ya cursÛ y aprobÛ, necesaria para validar los `prerrequisitos` del curso).
+#### 3. ÔøΩDÔøΩnde se guardan los cursos aprobados?
+* **En el recurso `Estudiante`:** Es un atributo propio del historial acadÔøΩmico de cada alumno (aparece como `estudiante["aprobados"]`, una lista con los cÔøΩdigos de las materias que ya cursÔøΩ y aprobÔøΩ, necesaria para validar los `prerrequisitos` del curso).
+
+---
+
+## Paso 2
+
+> **Pregunta:** ¬øPor qu√© cancelar se hace con `PATCH` y no con `DELETE`? ¬øQu√© se pierde si se borra la inscripci√≥n?
+
+### Respuesta
+
+En sistemas reales (como universidades, bancos o tiendas), casi nunca se usa `DELETE` para cancelar tr√°mites.
+
+* **¬øPor qu√© `PATCH`?** Porque la inscripci√≥n sigue existiendo como un registro hist√≥rico en la base de datos; lo √∫nico que cambia es una propiedad suya (`estado`: pasa de `"ACTIVA"` a `"CANCELADA"`). A esto en ingenier√≠a de software se le llama **borrado l√≥gico (*Soft Delete*)**.
+* **¬øQu√© se pierde si se usa `DELETE`?**
+  1. **Trazabilidad y auditor√≠a:** Si se borra el registro f√≠sico, desaparece la evidencia de que el estudiante alguna vez estuvo inscrito, cu√°ndo se inscribi√≥ y cu√°ndo cancel√≥.
+  2. **Historial acad√©mico:** La universidad no podr√≠a saber cu√°ntas veces un estudiante ha cancelado una materia (un dato clave para reglamentos estudiantiles o bloqueos acad√©micos).
+  3. **Estad√≠sticas de demanda:** Se perder√≠an m√©tricas sobre qu√© cursos tienen mayor tasa de deserci√≥n o cancelaci√≥n.
 
 ---
