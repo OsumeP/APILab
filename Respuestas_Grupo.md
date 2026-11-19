@@ -36,3 +36,17 @@ En sistemas reales (como universidades, bancos o tiendas), casi nunca se usa `DE
   3. **Estadísticas de demanda:** Se perderían métricas sobre qué cursos tienen mayor tasa de deserción o cancelación.
 
 ---
+
+## Paso 3
+
+> **Pregunta:** ¿Por qué no se borra una inscripción cancelada? ¿Por qué un duplicado responde `409` y no `400`?
+
+### Respuesta
+
+* **¿Por qué no se borra una inscripción cancelada?**
+  Para mantener el historial y la auditoría académica (saber qué materias inscribió y retiró un estudiante en el semestre), además de que cambiar su estado a `CANCELADA` ya libera el cupo automáticamente sin destruir la trazabilidad.
+
+* **¿Por qué un duplicado responde `409` y no `400`?**
+  Porque **`400 Bad Request`** significa que la petición está mal formada (sintaxis rota o datos corruptos que el servidor ni siquiera puede procesar). En un duplicado, el JSON es perfectamente válido, pero la operación entra en **conflicto (`409 Conflict`)** con el estado actual de los datos en el servidor (ya existe una inscripción activa igual).
+
+---

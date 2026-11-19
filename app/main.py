@@ -46,7 +46,7 @@ def listar_cursos():
 # 2 --- POST /inscripciones ----------------------------------------------------
 # TODO(Paso 2): decorador para  POST /inscripciones
 #               con response_model=Inscripcion y status_code=201 (se crea un recurso)
-
+# 2 --- POST /inscripciones ----------------------------------------------------
 @app.post("/inscripciones", response_model=Inscripcion, status_code=201)
 
 
@@ -59,13 +59,18 @@ def crear_inscripcion(cuerpo: InscripcionCrear):
 
     # TODO(Paso 3) Regla 1 - DUPLICADA
     #   Si datos.buscar_activa(estudiante_id, curso_codigo) encuentra algo -> 409 "DUPLICADA"
-
+    if datos.buscar_activa(cuerpo.estudiante_id, cuerpo.curso_codigo) is not None:
+        raise HTTPException(status_code=409, detail="DUPLICADA")
     # TODO(Paso 3) Regla 2 - PRERREQUISITOS_PENDIENTES
     #   Si algún código de curso["prerrequisitos"] NO está en estudiante["aprobados"] -> 409
-
+    for prereq in curso["prerrequisitos"]:
+        if prereq not in estudiante["aprobados"]:
+            raise HTTPException(status_code=409, detail="PRERREQUISITOS_PENDIENTES")
     # TODO(Paso 3) Regla 3 - SIN_CUPO
     #   Si len(datos.activas_del_curso(codigo)) >= curso["cupos"] -> 409 "SIN_CUPO"
-
+    if len(datos.activas_del_curso(cuerpo.curso_codigo)) >= curso["cupos"]:
+        raise HTTPException(status_code=409, detail="SIN_CUPO")
+    
     return datos.guardar_inscripcion(cuerpo.estudiante_id, cuerpo.curso_codigo,
                                      EstadoInscripcion.ACTIVA.value)
 
@@ -73,7 +78,6 @@ def crear_inscripcion(cuerpo: InscripcionCrear):
 # 3 --- GET /inscripciones/{inscripcion_id} ------------------------------------
 # TODO(Paso 2): decorador para  GET /inscripciones/{inscripcion_id}
 #               con response_model=Inscripcion
-
 @app.get("/inscripciones/{inscripcion_id}", response_model=Inscripcion)
 
 
@@ -88,7 +92,6 @@ def obtener_inscripcion(inscripcion_id: int):
 # 4 --- GET /estudiantes/{estudiante_id}/inscripciones -------------------------
 # TODO(Paso 2): decorador para  GET /estudiantes/{estudiante_id}/inscripciones
 #               con response_model=list[Inscripcion]
-
 @app.get("/estudiantes/{estudiante_id}/inscripciones", response_model=list[Inscripcion])
 
 
@@ -102,7 +105,6 @@ def inscripciones_de_estudiante(estudiante_id: str):
 # 5 --- PATCH /inscripciones/{inscripcion_id} ----------------------------------
 # TODO(Paso 2): decorador para  PATCH /inscripciones/{inscripcion_id}
 #               con response_model=Inscripcion
-
 @app.patch("/inscripciones/{inscripcion_id}", response_model=Inscripcion)
 
 
@@ -116,4 +118,8 @@ def cambiar_estado(inscripcion_id: int, cuerpo: CambioEstado):
     #   Si la inscripción NO está "ACTIVA" o cuerpo.estado NO es CANCELADA
     #     -> 409 "TRANSICION_INVALIDA"
     #   Si es válida: cambia inscripcion["estado"] a "CANCELADA" y devuélvela.
-    raise NotImplementedError("Completa el Paso 3")
+    if inscripcion["estado"] != EstadoInscripcion.ACTIVA.value or cuerpo.estado != EstadoInscripcion.CANCELADA:
+        raise HTTPException(status_code=409, detail="TRANSICION_INVALIDA")
+
+    inscripcion["estado"] = EstadoInscripcion.CANCELADA.value
+    return inscripcion
